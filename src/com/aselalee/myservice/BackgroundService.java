@@ -12,16 +12,24 @@ import android.widget.Toast;
 public class BackgroundService extends Service implements MyListener{
 	private MyThread myServiceThread = null;
 	private Notification mNt = null;
-	private static boolean isMyServiceStarted;
 	private final int ST_L1 = 0;
 	private final int ST_L3 = 2;
-	private static MyListener myListener;
 	private NotificationManager mNM = null;
+
+	private static MyListener myListener;
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		isMyServiceStarted = false;
 		return START_STICKY;
+	}
+
+	@Override
+	public void onCreate() {
+		setNotification();
+		Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+		myServiceThread = new MyThread();
+		myServiceThread.start();
+		myListener = this;
 	}
 
 	private void setNotification() {
@@ -49,23 +57,10 @@ public class BackgroundService extends Service implements MyListener{
 		if(myServiceThread != null) {
 			myServiceThread.interrupt();
 		}
-		isMyServiceStarted = false;
 		stopForeground(true);
 		myListener = null;
 	}
 
-	@Override
-	public void onCreate() {
-		if(isMyServiceStarted == true){
-			return;
-		}
-		setNotification();
-		Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
-		myServiceThread = new MyThread();
-		myServiceThread.start();
-		isMyServiceStarted = true;
-		myListener = this;
-	}
 	@Override
 	public IBinder onBind(Intent arg0) {
 		return null;

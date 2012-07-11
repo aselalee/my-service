@@ -6,6 +6,7 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="15" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -21,6 +22,21 @@
             </intent-filter>
         </activity>
         <service android:name=".BackgroundService"></service>
+        <receiver android:name=".MyBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".MyStateChangeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".MyConectivityChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
