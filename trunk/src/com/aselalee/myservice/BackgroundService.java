@@ -87,7 +87,6 @@ public class BackgroundService extends Service implements MyListener{
 		}
 	}
 
-	@Override
 	public void onStatusChange(int statusID, String statusMsg) {
 		toggleNotificationIcon();
 	}
